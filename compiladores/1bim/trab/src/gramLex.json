@@ -1,0 +1,100 @@
+{
+   ,"comment": "JSON Math Parser",
+   // JavaScript comments also work
+
+   "lex": {
+      // "rules": [
+      //    ["\\s+",                    "/* skip whitespace */"],
+      //    ["[0-9]+(?:\\.[0-9]+)?\\b", "return 'NUMBER'"],
+      //    ["\\*",                     "return '*'"],
+      //    ["\\/",                     "return '/'"],
+      //    ["-",                       "return '-'"],
+      //    ["\\+",                     "return '+'"],
+      //    ["\\^",                     "return '^'"],
+      //    ["!",                       "return '!'"],
+      //    ["%",                       "return '%'"],
+      //    ["\\(",                     "return '('"],
+      //    ["\\)",                     "return ')'"],
+      //    ["PI\\b",                   "return 'PI'"],
+      //    ["E\\b",                    "return 'E'"],
+      //    ["$",                       "return 'EOF'"]
+      // ]
+      "rules": [
+         ["\\s+",                                 ,"console.log('Token INT'); /* skip whitespace */"],
+         ["int"                               ,"console.log('Token INT'); return 'INT'"],
+         ["double"                            ,"console.log('Token DOUBLE'); return 'DOUBLE'"],
+         ["float"                             ,"console.log('Token FLOAT'); return 'FLOAT'"],
+         ["char"                              ,"console.log('Token CHAR'); return 'CHAR'"],
+         ["("                                 ,"console.log('Token (' ); return '('"],
+         [")"                                 ,"console.log('Token )' ); return ')'"],
+         ["*"                                 ,"console.log('Token *'); return '*'"],
+         ["+"                                 ,"console.log('Token +'); return '+'"],
+         ["-"                                 ,"console.log('Token -'); return '-'"],
+         ["/"                                 ,"console.log('Token /'); return '/'"],
+         [";"                                 ,"console.log('Token ;'); return ';'"],
+         [":"                                 ,"console.log('Token :'); return ':'"],
+         ["."                                 ,"console.log('Token .'); return '.'"],
+         [","                                 ,"console.log('Token ,'); return ','"],
+         ["'"                                 ,"console.log('Token QUOTE'); return 'QUOTE'"],
+         ["\""                                 ,"console.log('Token DQUOTE'); return 'DQUOTE'"],
+         ["["                                 ,"console.log('Token ['); return '['"],
+         ["]"                                 ,"console.log('Token ]'); return ']'"],
+         ["{"                                 ,"console.log('Token {'); return '{'"],
+         ["}"                                 ,"console.log('Token }'); return '}'"],
+         ["<="                                ,"console.log('Token LE'); return 'LE'"],
+         [">="                                ,"console.log('Token GE'); return 'GE'"],
+         ["=="                                ,"console.log('Token EQ'); return 'EQ'"],
+         ["!="                                ,"console.log('Token NE'); return 'NE'"],
+         ["<"                                 ,"console.log('Token <'); return '<'"],
+         [">"                                 ,"console.log('Token >'); return '>'"],
+         ["="                                 ,"console.log('Token ='); return '='"],
+         ["||"                                ,"console.log('Token OR'); return 'OR'"],
+         ["!"                                 ,"console.log('Token NOT'); return 'NOT'"],
+         ["&&"                                ,"console.log('Token AND'); return 'AND'"],
+         ["if"                                ,"console.log('Token IF'); return 'IF'"],
+         ["while"                             ,"console.log('Token WHILE'); return 'WHILE'"],
+         ["switch"                            ,"console.log('Token SWITCH'); return 'SWITCH'"],
+         ["case"                              ,"console.log('Token CASE'); return 'CASE'"],
+         ["break"                             ,"console.log('Token BREAK'); return 'BREAK'"],
+         ["default"                           ,"console.log('Token DEFAULT'); return 'DEFAULT'"],
+         ["else"                              ,"console.log('Token ELSE'); return 'ELSE'"],
+         ["var"                               ,"console.log('Token VAR'); return 'VAR'"],
+         ["do while"                          ,"console.log('Token DOWHILE'); return 'DOWHILE'"],
+         ["#"                                 ,"console.log('Token #'); return '#'"],
+         ["define"                            ,"console.log('Token DEFINE'); return 'DEFINE'"],
+         ["[a-zA-Z][a-zA-Z0-9_]*"               ,"console.log('Token IDF', yytext); return 'IDF'"],
+         ["[0-9]*\\.[0-9]+([eE][+-][0-9]+)?"     ,"console.log('Token F_LIT', yytext); return 'F_LIT'"],
+         ["[0-9]+"                              ,"console.log('Token INT_LIT', yytext); return 'INT_LIT'"],
+         ["."                                   ,"console.log('Erro léxico: caractere [', yytext, '] não reconhecido.')"],
+         ["$"                             ,"return 'EOF'"]
+      ]
+   },
+
+   "operators": [
+      ["left", "+", "-"],
+      ["left", "*", "/"],
+      ["left", "^"],
+      ["right", "!"],
+      ["right", "%"],
+      ["left", "UMINUS"]
+   ],
+
+   "bnf": {
+      "expressions": [["e EOF",   "return $1"]],
+
+      "e" :[
+         ["e + e",  "$$ = $1+$3"],
+         ["e - e",  "$$ = $1-$3"],
+         ["e * e",  "$$ = $1*$3"],
+         ["e / e",  "$$ = $1/$3"],
+         ["e ^ e",  "$$ = Math.pow($1, $3)"],
+         ["e !",    "$$ = (function(n) {if(n==0) return 1; return arguments.callee(n-1) * n})($1)"],
+         ["e %",    "$$ = $1/100"],
+         ["- e",    "$$ = -$2", {"prec": "UMINUS"}],
+         ["( e )",  "$$ = $2"],
+         ["NUMBER", "$$ = Number(yytext)"],
+         ["E",      "$$ = Math.E"],
+         ["PI",     "$$ = Math.PI"]
+      ]
+   }
+}
