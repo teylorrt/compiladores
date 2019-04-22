@@ -1,0 +1,295 @@
+{
+   "comment": "JSON C Parser",
+   "lex": {
+      "rules": [
+         ["\\s+"                              ,"/* skip whitespace */"],
+         ["//.*"                               ,"/* skip comment */"],
+         ["int"                               ,"return 'INT'"],
+         ["double"                            ,"return 'DOUBLE'"],
+         ["float"                             ,"return 'FLOAT'"],
+         ["char"                              ,"return 'CHAR'"],
+         ["\\("                                 ,"return '('"],
+         ["\\)"                                 ,"return ')'"],
+         [";"                                 ,"return ';'"],
+         [":"                                 ,"return ':'"],
+         [","                                 ,"return ','"],
+         ["\\["                                 ,"return '['"],
+         ["\\]"                                 ,"return ']'"],
+         ["\\{"                                 ,"return '{'"],
+         ["\\}"                                 ,"return '}'"],
+         ["<="                                ,"return 'LESS_EQUAL'"],
+         [">="                                ,"return 'GREATER_EQUAL'"],
+         ["=="                                ,"return 'EQUAL'"],
+         ["!="                                ,"return 'NOT_EQUAL'"],
+         ["\\+="                                ,"return 'ADD_ATTR'"],
+         ["\\-="                                ,"return 'SUB_ATTR'"],
+         ["\\*="                                ,"return 'MULT_ATTR'"],
+         ["/="                                ,"return 'DIV_ATTR'"],
+         ["<"                                 ,"return 'LESS'"],
+         [">"                                 ,"return 'GREATER'"],
+         ["="                                 ,"return 'ATTR'"],
+         ["\\*"                                 ,"return 'MULT'"],
+         ["\\+\\+"                                 ,"return 'ADDADD'"],
+         ["\\-\\-"                                 ,"return 'SUBSUB'"],
+         ["\\+"                                 ,"return 'ADD'"],
+         ["\\-"                                 ,"return 'SUB'"],
+         ["/"                                 ,"return 'DIV'"],
+         ["\\|\\|"                                ,"return 'OR'"],
+         ["!"                                 ,"return 'NOT'"],
+         ["&&"                                ,"return 'AND'"],
+         ["if"                                ,"return 'IF'"],
+         ["while"                             ,"return 'WHILE'"],
+         ["switch"                            ,"return 'SWITCH'"],
+         ["case"                              ,"return 'CASE'"],
+         ["break"                             ,"return 'BREAK'"],
+         ["default"                           ,"return 'DEFAULT'"],
+         ["else"                              ,"return 'ELSE'"],
+         ["for"                          ,"return 'FOR'"],
+         ["do"                          ,"return 'DO'"],
+         ["#define"                            ,"return 'DEFINE'"],
+         ["#include"                            ,"return 'INCLUDE'"],
+         ["#"                                 ,"return 'HASHTAG'"],
+         ["&"                                 ,"return 'ADDRESS'"],
+         ["%"                                 ,"return 'MOD'"],
+         ["void"                            ,"return 'VOID'"],
+         ["return"                            ,"return 'RETURN'"],
+         ["printf"                            ,"return 'PRINTF'"],
+         ["scanf"                            ,"return 'SCANF'"],
+         ["system"                            ,"return 'SYSTEM'"],
+         ["\\'.\\'"                              ,"return 'CHAR_LITERAL'"],
+         ["\".*\""                              ,"return 'STRING'"],
+         [".*\\.h"                              ,"return 'LIB'"],
+         ["[a-zA-Z][a-zA-Z0-9_]*"               ,"return 'IDENTIFIER'"],
+         ["[0-9]*\\.[0-9]+([eE][+-][0-9]+)?"     ,"return 'FLOAT_LITERAL'"],
+         ["[0-9]+"                              ,"return 'INT_LITERAL'"],
+         ["."                                   ,"console.log('Erro léxico: caractere [', yytext, '] não reconhecido.')"],
+         ["$"                             ,"return 'EOF'"]
+      ]
+   },
+
+   "operators": [
+      ["left", "ADD", "SUB"],
+      ["left", "MULT", "DIV"],
+      ["left", "UMINUS"]
+   ],
+
+   "bnf": {
+      "expressions": [
+         ["programa EOF",   "return $1"]
+      ],
+      "include": [
+         ["INCLUDE LESS LIB GREATER", ""],
+         ["INCLUDE STRING", ""]
+      ],
+      "listaInclude": [
+         ["include", ""],
+         ["include listaInclude", ""]
+      ],
+      "define": [
+         ["DEFINE IDENTIFIER valorLiteral ;", ""],
+         ["DEFINE IDENTIFIER STRING ;", ""]
+      ],
+      "listaDefine": [
+         ["define", ""],
+         ["define listaDefine", ""]
+      ],
+      "funcaoReservada": [
+         ["printf", ""],
+         ["scanf", ""],
+         ["system", ""]
+      ],
+      "printf": [
+         ["PRINTF ( STRING )", ""],
+         ["PRINTF ( STRING , listaIdentificador )", ""]
+      ],
+      "scanf": [
+         ["SCANF ( STRING , ADDRESS IDENTIFIER )", ""]
+      ],
+      "system": [
+         ["SYSTEM ( STRING )", ""]
+      ],
+      "tipo": [
+         ["INT",  ""],
+         ["DOUBLE",  ""],
+         ["FLOAT",  ""],
+         ["CHAR",  ""]
+      ],
+      "valorLiteral": [
+         ["FLOAT_LITERAL",  ""],
+         ["INT_LITERAL",  ""],
+         ["CHAR_LITERAL",  ""]
+      ],
+      "listaIdentificador": [
+         ["IDENTIFIER", ""],
+         ["IDENTIFIER , listaIdentificador", ""]
+      ],
+      "listaIdentificadorValor": [
+         ["atribuicao", ""],
+         ["atribuicao , listaIdentificadorValor", ""]
+      ],
+      "declaracaoVariavel": [
+         ["tipo listaIdentificadorValor ;", ""],
+         ["tipo listaIdentificador ;", ""]
+      ],
+      "case": [
+         ["CASE valor : listaComando BREAK ;", ""],
+         ["CASE valor : listaComando return", ""],
+         ["CASE valor : return", ""]
+      ],
+      "defaultSwitch":[
+         ["DEFAULT : listaComando BREAK ;", ""],
+         ["DEFAULT : listaComando return", ""],
+         ["DEFAULT : return", ""]
+      ],
+      "listaCase": [
+         ["case", ""],
+         ["listaCase case", ""]
+      ],
+      "operadorCondicional": [
+         ["NOT", ""],
+         ["AND", ""],
+         ["OR", ""]
+      ],
+      "operadorComparacao": [
+         ["LESS_EQUAL", ""],
+         ["GREATER_EQUAL", ""],
+         ["EQUAL", ""],
+         ["NOT_EQUAL", ""],
+         ["LESS", ""],
+         ["GREATER", ""]
+      ],
+      "valor": [
+         ["IDENTIFIER", ""],
+         ["valorLiteral", ""],
+         ["chamadaFuncao", ""],
+         [ "valor ADD valor",   "" ],
+         [ "valor SUB valor",   "" ],
+         [ "valor MULT valor",   "" ],
+         [ "valor DIV valor",   "" ],
+         [ "valor MOD valor",   "" ],
+         [ "( valor )",   "" ]
+      ],
+      "chamadaFuncao": [
+         ["IDENTIFIER ( )", ""],
+         ["IDENTIFIER ( listaIdentificador )", ""]
+      ],
+      "atribuicao": [
+         ["IDENTIFIER ATTR valor", ""],
+         ["IDENTIFIER ADD_ATTR valor", ""],
+         ["IDENTIFIER SUB_ATTR valor", ""],
+         ["IDENTIFIER MULT_ATTR valor", ""],
+         ["IDENTIFIER DIV_ATTR valor", ""],
+         ["IDENTIFIER ADDADD", ""],
+         ["IDENTIFIER SUBSUB", ""]
+      ],
+      "comando": [
+         ["declaracaoVariavel", ""],
+         ["condicional", ""],
+         ["iteracao", ""],
+         ["chamadaFuncao ;", ""],
+         ["atribuicao ;", ""],
+         ["funcaoReservada ;", ""]
+      ],
+      "listaComando": [
+         ["comando", ""],
+         ["listaComando comando", ""]
+      ],
+      "return": [
+         ["RETURN valor ;", ""],
+         ["RETURN ;", ""]
+      ],
+      "condicao": [
+         ["valor", ""],
+         ["valor operadorComparacao valor", ""],
+         ["NOT valor", ""]
+      ],
+      "listaCondicao":[
+         ["condicao", ""],
+         ["condicao operadorCondicional listaCondicao", ""],
+         ["( listaCondicao )", ""]
+      ],
+      "condicional": [
+         ["if", ""],
+         ["switch", ""]
+      ],
+      "if": [
+         ["IF ( listaCondicao ) comando", ""],
+         ["IF ( listaCondicao ) return", ""],
+         ["IF ( listaCondicao ) blocoExecucao", ""],
+         ["IF ( listaCondicao ) comando else", ""],
+         ["IF ( listaCondicao ) return else", ""],
+         ["IF ( listaCondicao ) blocoExecucao else", ""]
+      ],
+      "else": [
+         ["ELSE comando", ""],
+         ["ELSE return", ""],
+         ["ELSE blocoExecucao", ""]
+      ],
+      "switch": [
+         ["SWITCH ( valor ) blocoSwitch", ""]
+      ],
+      "blocoSwitch": [
+         ["{ defaultSwitch }", ""],
+         ["{ listaCase }", ""],
+         ["{ listaCase defaultSwitch }", ""]
+      ],
+      "iteracao": [
+         ["for", ""],
+         ["while", ""],
+         ["doWhile", ""]
+      ],
+      "for": [
+         ["FOR ( declaracaoVariavel listaCondicao ; atribuicao ) ;", ""],
+         ["FOR ( declaracaoVariavel listaCondicao ; atribuicao ) ;", ""],
+         ["FOR ( atribuicao ; listaCondicao ; atribuicao ) ;", ""],
+         ["FOR ( atribuicao ; listaCondicao ; atribuicao ) ;", ""],
+         ["FOR ( declaracaoVariavel listaCondicao ; atribuicao ) comando", ""],
+         ["FOR ( declaracaoVariavel listaCondicao ; atribuicao ) blocoExecucao", ""],
+         ["FOR ( atribuicao ; listaCondicao ; atribuicao ) comando", ""],
+         ["FOR ( atribuicao ; listaCondicao ; atribuicao ) blocoExecucao", ""]
+      ],
+      "while": [
+         ["WHILE ( listaCondicao ) ;", ""],
+         ["WHILE ( listaCondicao ) comando", ""],
+         ["WHILE ( listaCondicao ) blocoExecucao", ""]
+      ],
+      "doWhile": [
+         ["DO comando WHILE ( listaCondicao ) ;", ""],
+         ["DO blocoExecucao WHILE ( listaCondicao ) ;", ""]
+      ],
+      "blocoExecucao": [
+         ["{ }", ""],
+         ["{ return }", ""],
+         ["{ listaComando }", ""],
+         ["{ listaComando return }", ""]
+      ],
+      "listaParametro": [
+         ["tipo IDENTIFIER", ""],
+         ["tipo IDENTIFIER , listaParametro", ""]
+      ],
+      "funcao": [
+         ["cabecalhoFuncao blocoExecucao", "console.log('FUNÇÃO')"]
+      ],
+      "listaFuncao": [
+         ["funcao", ""],
+         ["funcao listaFuncao", ""]
+      ],
+      "cabecalhoFuncao": [
+         ["tipo IDENTIFIER ( VOID )", ""],
+         ["VOID IDENTIFIER ( VOID )", ""],
+         ["tipo IDENTIFIER ( listaParametro )", ""],
+         ["VOID IDENTIFIER ( listaParametro )", ""]
+      ],
+      "prototipoFuncao": [
+         ["cabecalhoFuncao ;", ""]
+      ],
+      "listaPrototipoFuncao": [
+         ["prototipoFuncao", ""],
+         ["prototipoFuncao listaPrototipoFuncao", ""]
+      ],
+      "programa": [
+         ["listaInclude listaFuncao", "console.log('CÓDIGO FONTE VÁLIDO!'); return $$;"],
+         ["listaInclude listaDefine listaFuncao", "console.log('CÓDIGO FONTE VÁLIDO!'); return $$;"]
+      ]
+   }
+}
