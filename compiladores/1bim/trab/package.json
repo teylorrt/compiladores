@@ -46,6 +46,7 @@
     "browserify": "2.x.x"
   },
   "scripts": {
+	"compiler": "jison src/gramatica.json && node gramatica.js src/sourceTest",
     "test": "node tests/all-tests.js"
   },
   "homepage": "http://jison.org"
