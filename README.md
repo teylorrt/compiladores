@@ -1,5 +1,5 @@
 #### Passos para executar o compilador ####
-1 - Instalar o NodeJS;
-2 - Acessar a pasta 1bim/trab;
-3 - Executar o comando 'npm install';
-4 - Executar o comando 'npm run compiler';
+1. Instalar o NodeJS;
+2. Acessar a pasta 1bim/trab;
+3. Executar o comando 'npm install';
+4. Executar o comando 'npm run compiler';
