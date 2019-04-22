@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <conio.h>
+#include "uahuahua.h"
+
+#define ICMS 0.18;
+#define MAX 100;
+#define ERRO "Erro!!!";
+
+void imprime_cabec(void)
+{
+  printf("******************************\n");
+  printf("* LINGUAGEM C *\n");
+  printf("******************************\n\n");
+  
+  return;
+}
+
+//multiplica recebe N1,N2 e retorna um int
+int multiplica(int N1, int N2)
+{
+  int resultado
+  resultado = N1 * N2;
+  
+  //retornando o valor para main
+  return(resultado);
+}
+
+int main(void)
+{
+  int V1=0, V2=0, resultado=0;
+  //Chamada da função imprime_cabec
+  imprime_cabec();
+  
+  printf("Digite o primeiro valor:");
+  scanf("%d", &V1);
+  printf("Digite o segundo valor:");
+  scanf("%d", &V2);
+  
+  //chama a função e recebe o retorno
+  resultado = multiplica(V1,V2);
+  printf("Resultado = %d\n", resultado);
+  
+  getch();
+  return 0;
+}

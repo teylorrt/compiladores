@@ -1,0 +1,5 @@
+	[
+      ["left", "ADD", "SUB"],
+      ["left", "MULT", "DIV"],
+      ["left", "UMINUS"]
+   ]
