@@ -3,6 +3,7 @@
    "lex": {
       "rules": [
          ["\\s+"                              ,"/* skip whitespace */"],
+         ["//.*"                               ,"/* skip comment */"],
          ["int"                               ,"return 'INT'"],
          ["double"                            ,"return 'DOUBLE'"],
          ["float"                             ,"return 'FLOAT'"],
@@ -45,13 +46,12 @@
          ["else"                              ,"return 'ELSE'"],
          ["for"                          ,"return 'FOR'"],
          ["do"                          ,"return 'DO'"],
+         ["#define"                            ,"return 'DEFINE'"],
+         ["#include"                            ,"return 'INCLUDE'"],
          ["#"                                 ,"return 'HASHTAG'"],
          ["&"                                 ,"return 'ADDRESS'"],
          ["%"                                 ,"return 'MOD'"],
-         ["define"                            ,"return 'DEFINE'"],
-         ["include"                            ,"return 'INCLUDE'"],
          ["void"                            ,"return 'VOID'"],
-         ["main"                            ,"return 'MAIN'"],
          ["return"                            ,"return 'RETURN'"],
          ["printf"                            ,"return 'PRINTF'"],
          ["scanf"                            ,"return 'SCANF'"],
@@ -78,20 +78,20 @@
          ["programa EOF",   "return $1"]
       ],
       "include": [
-         ["HASHTAG INCLUDE LESS LIB GREATER", ""],
-         ["HASHTAG INCLUDE STRING", ""]
+         ["INCLUDE LESS LIB GREATER", ""],
+         ["INCLUDE STRING", ""]
       ],
       "listaInclude": [
          ["include", ""],
          ["include listaInclude", ""]
       ],
       "define": [
-         ["HASHTAG DEFINE IDENTIFIER valorLiteral ;", ""],
-         ["HASHTAG DEFINE IDENTIFIER STRING ;", ""]
+         ["DEFINE IDENTIFIER valorLiteral ;", ""],
+         ["DEFINE IDENTIFIER STRING ;", ""]
       ],
       "listaDefine": [
-         ["define", "console.log('define')"],
-         ["define listaDefine", "console.log('listaa')"]
+         ["define", ""],
+         ["define listaDefine", ""]
       ],
       "funcaoReservada": [
          ["printf", ""],
@@ -99,14 +99,14 @@
          ["system", ""]
       ],
       "printf": [
-         ["PRINTF ( STRING )", "console.log('printf STRING')"],
-         ["PRINTF ( STRING , listaIdentificador )", "console.log('printf listaIdentificador')"]
+         ["PRINTF ( STRING )", ""],
+         ["PRINTF ( STRING , listaIdentificador )", ""]
       ],
       "scanf": [
-         ["SCANF ( STRING , ADDRESS IDENTIFIER )", "console.log('scanf')"]
+         ["SCANF ( STRING , ADDRESS IDENTIFIER )", ""]
       ],
       "system": [
-         ["SYSTEM ( STRING )", "console.log('system')"]
+         ["SYSTEM ( STRING )", ""]
       ],
       "tipo": [
          ["INT",  ""],
@@ -267,8 +267,12 @@
          ["tipo IDENTIFIER", ""],
          ["tipo IDENTIFIER , listaParametro", ""]
       ],
-      "main": [
-         ["INT MAIN ( VOID ) blocoExecucao", ""]
+      "funcao": [
+         ["cabecalhoFuncao blocoExecucao", "console.log('FUNÇÃO')"]
+      ],
+      "listaFuncao": [
+         ["funcao", ""],
+         ["funcao listaFuncao", ""]
       ],
       "cabecalhoFuncao": [
          ["tipo IDENTIFIER ( VOID )", ""],
@@ -283,22 +287,9 @@
          ["prototipoFuncao", ""],
          ["prototipoFuncao listaPrototipoFuncao", ""]
       ],
-      "funcao": [
-         ["cabecalhoFuncao blocoExecucao", ""]
-      ],
-      "listaFuncao": [
-         ["funcao", ""],
-         ["funcao listaFuncao", ""]
-      ],
       "programa": [
-         ["listaInclude main", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaFuncao main", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaPrototipoFuncao main listaFuncao", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaDefine main", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaDefine listaFuncao main", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaDefine listaPrototipoFuncao main listaFuncao", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaFuncao listaDefine main", "console.log('programa válido!'); return $$;"],
-         ["listaInclude listaPrototipoFuncao listaDefine main listaFuncao", "console.log('programa válido!'); return $$;"]
+         ["listaInclude listaFuncao", "console.log('CÓDIGO FONTE VÁLIDO!'); return $$;"],
+         ["listaInclude listaDefine listaFuncao", "console.log('CÓDIGO FONTE VÁLIDO!'); return $$;"]
       ]
    }
 }
