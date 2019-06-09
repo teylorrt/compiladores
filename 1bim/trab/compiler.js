@@ -58,5 +58,3 @@ var sintaticParser = function(src, srcName){
 }
 
 sintaticParser(sourceSuccess, "sourceTestSuccess");
-
-// sintaticParser(sourceError, "sourceTestError");
