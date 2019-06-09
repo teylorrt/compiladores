@@ -53,8 +53,8 @@
          ["atribuicao , listaIdentificadorValor", ""]
       ],
       "declaracaoVariavel": [
-         ["tipo listaIdentificadorValor ;", ""],
-         ["tipo listaIdentificador ;", ""]
+         ["tipo listaIdentificadorValor ;", "Jison.completarPreInseridos($1); Jison.inserirSimbolos();"],
+         ["tipo listaIdentificador ;", "Jison.completarPreInseridos($1); Jison.inserirSimbolos();"]
       ],
       "case": [
          ["CASE valor : listaComando BREAK ;", ""],
@@ -99,7 +99,7 @@
          ["IDENTIFIER ( listaIdentificador )", ""]
       ],
       "atribuicao": [
-         ["IDENTIFIER ATTR valor", ""],
+         ["IDENTIFIER ATTR valor", "Jison.simbolosPreInseridos.push({lexema: $1, token: 'IDENTIFIER', valor: $3});"],
          ["IDENTIFIER ADD_ATTR valor", ""],
          ["IDENTIFIER SUB_ATTR valor", ""],
          ["IDENTIFIER MULT_ATTR valor", ""],
