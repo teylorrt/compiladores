@@ -35,14 +35,13 @@
       ],
       "tipo": [
          ["INT",  ""],
-         ["DOUBLE",  ""],
          ["FLOAT",  ""],
          ["CHAR",  ""]
       ],
       "valorLiteral": [
-         ["FLOAT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'FLOAT_LITERAL', valor: $1});"],
-         ["INT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'INT_LITERAL', valor: $1});"],
-         ["CHAR_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'CHAR_LITERAL', valor: $1});"]
+         ["FLOAT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'FLOAT_LITERAL', valor: $1, tipo: 'float'});"],
+         ["INT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'INT_LITERAL', valor: $1, tipo: 'int'});"],
+         ["CHAR_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'CHAR_LITERAL', valor: $1, tipo: 'char'});"]
       ],
       "listaIdentificador": [
          ["IDENTIFIER", "Jison.simbolosPreInseridos.push({lexema: $1, token: 'IDENTIFIER', valor: null});"],

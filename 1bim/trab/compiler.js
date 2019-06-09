@@ -11,13 +11,13 @@ jison.simbolosPreInseridos = [];
 jison.inserirSimbolos = function (tipo) {
 
     for (let index = 0; index < jison.simbolosPreInseridos.length; index++) {
-        jison.simbolosPreInseridos[index].tipo = tipo;
+        jison.simbolosPreInseridos[index].tipo = jison.simbolosPreInseridos[index].token.indexOf('_LITERAL') < 0 ? tipo : jison.simbolosPreInseridos[index].tipo;
 
         let simbolo = {
             token: jison.simbolosPreInseridos[index].token,
-            tipo: jison.simbolosPreInseridos[index].tipo,
             valor: jison.simbolosPreInseridos[index].valor,
             escopo: jison.escopo,
+            tipo: jison.simbolosPreInseridos[index].tipo
         };
 
         jison.tabelaSimbolo[jison.simbolosPreInseridos[index].lexema + '_' + simbolo.escopo] = simbolo;
@@ -56,7 +56,7 @@ jison.analiseSemantica = function () {
 jison.obterTipoValorSimbolo = function (simboloName) {
     let simbolo = jison.tabelaSimbolo[simboloName];
     if (simbolo) {
-        if (simbolo.valor == null || typeof (simbolo.valor) === 'string' && simbolo.token.indexOf('_LITERAL') >= 0) {// => int b || literal
+        if (simbolo.valor == null || typeof (simbolo.valor) === 'string' && simbolo.token.indexOf('_LITERAL') >= 0) {
             return simbolo.tipo;
         }
         else if (typeof (simbolo.valor) === 'object') {
