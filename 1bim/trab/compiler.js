@@ -8,31 +8,34 @@ jison.tabelaSimbolo = [
 
 jison.simbolosPreInseridos = [];
 
-jison.inserirSimbolos = function(){
+jison.inserirSimbolos = function(tipo) {
+
     for (let index = 0; index < jison.simbolosPreInseridos.length; index++) {
+        jison.simbolosPreInseridos[index].tipo = tipo;
+
         let simbolo = {
             token: jison.simbolosPreInseridos[index].token,
             tipo: jison.simbolosPreInseridos[index].tipo,
             valor: jison.simbolosPreInseridos[index].valor,
-            escopo: 0,
-            utilizada: true
+            utilizada: true,
+            escopo: jison.escopo,
         };
-        // simbolo['token'] = token;
-        // simbolo['tipo'] = tipo;
-        // simbolo['valor'] = valor;
-        // simbolo['escopo'] = escopo;
-        // simbolo['utilizada'] = utilizada;
     
-        jison.tabelaSimbolo[jison.simbolosPreInseridos[index].lexema] = simbolo;
+        jison.tabelaSimbolo[jison.simbolosPreInseridos[index].lexema + '_' + simbolo.escopo] = simbolo;
     }
 
     jison.simbolosPreInseridos = [];
 };
 
-jison.completarPreInseridos = function(tipo){
-    for (let index = 0; index < jison.simbolosPreInseridos.length; index++) {
-        jison.simbolosPreInseridos[index].tipo = tipo;
-    }
+jison.atualizarEscopos = function() {
+
+    // for (let prop in jison.tabelaSimbolo) {
+    //     if(!jison.tabelaSimbolo[prop].escopo){
+    //         jison.tabelaSimbolo[prop].escopo = jison.escopo;
+    //     }
+    // }
+
+    jison.escopo++;
 };
 
 var grammar = JSON.parse(fs.readFileSync("json/grammar.json", "utf8"));

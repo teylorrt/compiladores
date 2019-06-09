@@ -8,7 +8,7 @@
       ],
       "listaInclude": [
          ["include", ""],
-         ["include listaInclude", "Jison.escopo++;"]
+         ["include listaInclude", ""]
       ],
       "define": [
          ["DEFINE IDENTIFIER valorLiteral ;", ""],
@@ -45,7 +45,7 @@
          ["CHAR_LITERAL",  ""]
       ],
       "listaIdentificador": [
-         ["IDENTIFIER", ""],
+         ["IDENTIFIER", "Jison.simbolosPreInseridos.push({lexema: $1, token: 'IDENTIFIER', valor: null});"],
          ["IDENTIFIER , listaIdentificador", ""]
       ],
       "listaIdentificadorValor": [
@@ -53,8 +53,8 @@
          ["atribuicao , listaIdentificadorValor", ""]
       ],
       "declaracaoVariavel": [
-         ["tipo listaIdentificadorValor ;", "Jison.completarPreInseridos($1); Jison.inserirSimbolos();"],
-         ["tipo listaIdentificador ;", "Jison.completarPreInseridos($1); Jison.inserirSimbolos();"]
+         ["tipo listaIdentificadorValor ;", "Jison.inserirSimbolos($1);"],
+         ["tipo listaIdentificador ;", "Jison.inserirSimbolos($1);"]
       ],
       "case": [
          ["CASE valor : listaComando BREAK ;", ""],
@@ -189,11 +189,11 @@
          ["{ listaComando return }", ""]
       ],
       "listaParametro": [
-         ["tipo IDENTIFIER", ""],
-         ["tipo IDENTIFIER , listaParametro", ""]
+         ["tipo IDENTIFIER", "Jison.simbolosPreInseridos.push({lexema: $2, token: 'IDENTIFIER', tipo: $1, valor: null});"],
+         ["tipo IDENTIFIER , listaParametro", "Jison.simbolosPreInseridos.push({lexema: $2, token: 'IDENTIFIER', tipo: $1, valor: null});"]
       ],
       "funcao": [
-         ["cabecalhoFuncao blocoExecucao", ""]
+         ["cabecalhoFuncao blocoExecucao", "Jison.atualizarEscopos();"]
       ],
       "listaFuncao": [
          ["funcao", ""],
