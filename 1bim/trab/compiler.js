@@ -34,6 +34,49 @@ jison.inserirPreInseridos = function (simboloPreInserido) {
     jison.simbolosPreInseridos.push(simboloPreInserido);
 };
 
+jison.analiseSemantica = function () {
+    for (let simboloProp in jison.tabelaSimbolo) {
+        let simbolo = jison.tabelaSimbolo[simboloProp];
+
+        if (simbolo.token === 'IDENTIFIER') {
+            if (simbolo.valor == null) {
+                continue;
+            }
+            else {
+                let tipoValorSimbolo = jison.obterTipoValorSimbolo(simboloProp);
+
+                if(tipoValorSimbolo !== simbolo.tipo){
+                    throw "Expressão inválida";
+                }
+            }
+        }
+    }
+};
+
+jison.obterTipoValorSimbolo = function (simboloName) {
+    let simbolo = jison.tabelaSimbolo[simboloName];
+    if (simbolo) {
+        if (simbolo.valor == null || typeof (simbolo.valor) === 'string' && simbolo.token.indexOf('_LITERAL') >= 0) {// => int b || literal
+            return simbolo.tipo;
+        }
+        else if (typeof (simbolo.valor) === 'object') {
+            if (simbolo.valor.oper === 'LIT') {
+                return jison.obterTipoValorSimbolo(simbolo.valor.value + "_" + simbolo.escopo);
+            }
+            else {
+                let tipoLeft = jison.obterTipoValorSimbolo(simbolo.valor.left.value + "_" + simbolo.escopo);
+                let tipoRight = jison.obterTipoValorSimbolo(simbolo.valor.right.value + "_" + simbolo.escopo);
+
+                if (tipoLeft == tipoRight) {
+                    return tipoLeft;
+                }
+            }
+        }
+    }
+
+    return "";
+}
+
 var grammar = JSON.parse(fs.readFileSync("json/grammar.json", "utf8"));
 grammar.lex = JSON.parse(fs.readFileSync("json/lex.json", "utf8"));
 grammar.bnf = JSON.parse(fs.readFileSync("json/bnf.json", "utf8"));
@@ -47,8 +90,8 @@ var compiler = new jison.Parser(grammar);
 
 var sintaticParser = function (src, srcName) {
     try {
-        var teste = compiler.parse(src);
-        console.log(jison.tabelaSimbolo);
+        compiler.parse(src);
+        jison.analiseSemantica();
         console.log(srcName + ' is a valid code!');
     } catch (error) {
         console.log(srcName + ' is a invalid code:\n');
