@@ -11,7 +11,11 @@ jison.simbolosPreInseridos = [];
 jison.inserirSimbolos = function (tipo) {
 
     for (let index = 0; index < jison.simbolosPreInseridos.length; index++) {
-        jison.simbolosPreInseridos[index].tipo = jison.simbolosPreInseridos[index].token.indexOf('_LITERAL') < 0 ? tipo : jison.simbolosPreInseridos[index].tipo;
+        // jison.simbolosPreInseridos[index].tipo = jison.simbolosPreInseridos[index].token.indexOf('_LITERAL') < 0 ? tipo : jison.simbolosPreInseridos[index].tipo;
+
+        if(!jison.simbolosPreInseridos[index].tipo){
+            jison.simbolosPreInseridos[index].tipo = tipo;
+        }
 
         let simbolo = {
             token: jison.simbolosPreInseridos[index].token,
@@ -91,6 +95,7 @@ var compiler = new jison.Parser(grammar);
 var sintaticParser = function (src, srcName) {
     try {
         compiler.parse(src);
+        console.log(jison.tabelaSimbolo);
         console.log(srcName + ' is a valid code!');
     } catch (error) {
         console.log(srcName + ' is a invalid code:\n');
