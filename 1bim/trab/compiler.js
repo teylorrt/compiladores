@@ -8,7 +8,7 @@ jison.tabelaSimbolo = [
 
 jison.simbolosPreInseridos = [];
 
-jison.inserirSimbolos = function(tipo) {
+jison.inserirSimbolos = function (tipo) {
 
     for (let index = 0; index < jison.simbolosPreInseridos.length; index++) {
         jison.simbolosPreInseridos[index].tipo = tipo;
@@ -17,25 +17,21 @@ jison.inserirSimbolos = function(tipo) {
             token: jison.simbolosPreInseridos[index].token,
             tipo: jison.simbolosPreInseridos[index].tipo,
             valor: jison.simbolosPreInseridos[index].valor,
-            utilizada: true,
             escopo: jison.escopo,
         };
-    
+
         jison.tabelaSimbolo[jison.simbolosPreInseridos[index].lexema + '_' + simbolo.escopo] = simbolo;
     }
 
     jison.simbolosPreInseridos = [];
 };
 
-jison.atualizarEscopos = function() {
-
-    // for (let prop in jison.tabelaSimbolo) {
-    //     if(!jison.tabelaSimbolo[prop].escopo){
-    //         jison.tabelaSimbolo[prop].escopo = jison.escopo;
-    //     }
-    // }
-
+jison.atualizarEscopos = function () {
     jison.escopo++;
+};
+
+jison.inserirPreInseridos = function (simboloPreInserido) {
+    jison.simbolosPreInseridos.push(simboloPreInserido);
 };
 
 var grammar = JSON.parse(fs.readFileSync("json/grammar.json", "utf8"));
@@ -49,7 +45,7 @@ var sourceError = fs.readFileSync("sourceTestError", "utf8");
 // Generate Compiler
 var compiler = new jison.Parser(grammar);
 
-var sintaticParser = function(src, srcName){
+var sintaticParser = function (src, srcName) {
     try {
         var teste = compiler.parse(src);
         console.log(jison.tabelaSimbolo);
@@ -57,7 +53,7 @@ var sintaticParser = function(src, srcName){
     } catch (error) {
         console.log(srcName + ' is a invalid code:\n');
         console.log(error.toString());
-    }  
+    }
 }
 
 sintaticParser(sourceSuccess, "sourceTestSuccess");

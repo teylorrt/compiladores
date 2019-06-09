@@ -40,9 +40,9 @@
          ["CHAR",  ""]
       ],
       "valorLiteral": [
-         ["FLOAT_LITERAL",  ""],
-         ["INT_LITERAL",  ""],
-         ["CHAR_LITERAL",  ""]
+         ["FLOAT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'FLOAT_LITERAL', valor: $1});"],
+         ["INT_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'INT_LITERAL', valor: $1});"],
+         ["CHAR_LITERAL",  "Jison.inserirPreInseridos({lexema: $1, token: 'CHAR_LITERAL', valor: $1});"]
       ],
       "listaIdentificador": [
          ["IDENTIFIER", "Jison.simbolosPreInseridos.push({lexema: $1, token: 'IDENTIFIER', valor: null});"],
@@ -84,14 +84,13 @@
          ["GREATER", ""]
       ],
       "valor": [
-         ["IDENTIFIER", ""],
-         ["valorLiteral", ""],
-         ["chamadaFuncao", ""],
-         [ "valor ADD valor",   "" ],
-         [ "valor SUB valor",   "" ],
-         [ "valor MULT valor",   "" ],
-         [ "valor DIV valor",   "" ],
-         [ "valor MOD valor",   "" ],
+         ["IDENTIFIER", "$$ = {oper: 'ID', value: $1};"],
+         ["valorLiteral", "$$ = {oper: 'LIT', value: $1};"],
+         [ "valor ADD valor",   "$$ = {oper: 'ADD', left: $1, right: $3};" ],
+         [ "valor SUB valor",   "$$ = {oper: 'SUB', left: $1, right: $3};" ],
+         [ "valor MULT valor",   "$$ = {oper: 'MULT', left: $1, right: $3};" ],
+         [ "valor DIV valor",   "$$ = {oper: 'DIV', left: $1, right: $3};" ],
+         [ "valor MOD valor",   "$$ = {oper: 'MOD', left: $1, right: $3};" ],
          [ "( valor )",   "" ]
       ],
       "chamadaFuncao": [
@@ -99,7 +98,7 @@
          ["IDENTIFIER ( listaIdentificador )", ""]
       ],
       "atribuicao": [
-         ["IDENTIFIER ATTR valor", "Jison.simbolosPreInseridos.push({lexema: $1, token: 'IDENTIFIER', valor: $3});"],
+         ["IDENTIFIER ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3});"],
          ["IDENTIFIER ADD_ATTR valor", ""],
          ["IDENTIFIER SUB_ATTR valor", ""],
          ["IDENTIFIER MULT_ATTR valor", ""],
