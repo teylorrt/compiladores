@@ -211,7 +211,7 @@
          ["prototipoFuncao listaPrototipoFuncao", ""]
       ],
       "programa": [
-         ["listaInclude listaFuncao", "return $$;"],
-         ["listaInclude listaDefine listaFuncao", "return $$;"]
+         ["listaInclude listaFuncao", "Jison.analiseSemantica(); return $$;"],
+         ["listaInclude listaDefine listaFuncao", "Jison.analiseSemantica(); return $$;"]
       ]
    }

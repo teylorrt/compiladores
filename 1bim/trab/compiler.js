@@ -91,7 +91,6 @@ var compiler = new jison.Parser(grammar);
 var sintaticParser = function (src, srcName) {
     try {
         compiler.parse(src);
-        jison.analiseSemantica();
         console.log(srcName + ' is a valid code!');
     } catch (error) {
         console.log(srcName + ' is a invalid code:\n');
