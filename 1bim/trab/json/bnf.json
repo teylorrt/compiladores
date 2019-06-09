@@ -1,6 +1,6 @@
 {
       "expressions": [
-         ["programa EOF",   "return $1"]
+         ["programa EOF",   "return $1;"]
       ],
       "include": [
          ["INCLUDE LESS LIB GREATER", ""],
@@ -8,7 +8,7 @@
       ],
       "listaInclude": [
          ["include", ""],
-         ["include listaInclude", ""]
+         ["include listaInclude", "Jison.escopo++;"]
       ],
       "define": [
          ["DEFINE IDENTIFIER valorLiteral ;", ""],
