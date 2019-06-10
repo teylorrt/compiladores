@@ -97,13 +97,13 @@
          ["IDENTIFIER ( listaIdentificador )", ""]
       ],
       "atribuicao": [
-         ["IDENTIFIER ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3});"],
-         ["IDENTIFIER ADD_ATTR valor", ""],
-         ["IDENTIFIER SUB_ATTR valor", ""],
-         ["IDENTIFIER MULT_ATTR valor", ""],
-         ["IDENTIFIER DIV_ATTR valor", ""],
-         ["IDENTIFIER ADDADD", ""],
-         ["IDENTIFIER SUBSUB", ""]
+         ["IDENTIFIER ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3, tipoAtribuicao: 'ATTR'});"],
+         ["IDENTIFIER ADD_ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3, tipoAtribuicao: 'ADD_ATTR'});"],
+         ["IDENTIFIER SUB_ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3, tipoAtribuicao: 'SUB_ATTR'});"],
+         ["IDENTIFIER MULT_ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3, tipoAtribuicao: 'MULT_ATTR'});"],
+         ["IDENTIFIER DIV_ATTR valor", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: $3, tipoAtribuicao: 'DIV_ATTR'});"],
+         ["IDENTIFIER ADDADD", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: null, tipoAtribuicao: 'ADDADD'});"],
+         ["IDENTIFIER SUBSUB", "Jison.inserirPreInseridos({lexema: $1, token: 'IDENTIFIER', valor: null, tipoAtribuicao: 'SUBSUB'});"]
       ],
       "comando": [
          ["declaracaoVariavel", ""],

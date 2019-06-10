@@ -20,13 +20,15 @@ int multiplica(int N1, int N2)
   int resultado = N1 * N2;
   int result2 = 3;
   
+  result2++;
+  
   //retornando o valor para main
   return(resultado);
 }
 
 int main(void)
 {
-  int V1=7, V2=8, resultado=1;
+  int V1=7, V2=8, resultado=2/3;
   //Chamada da função imprime_cabec
   imprime_cabec();
   

@@ -25,7 +25,8 @@ jison.inserirSimbolos = function (tipo) {
             token: jison.simbolosPreInseridos[index].token,
             valor: jison.simbolosPreInseridos[index].valor,
             escopo: jison.escopo,
-            tipo: jison.simbolosPreInseridos[index].tipo
+            tipo: jison.simbolosPreInseridos[index].tipo,
+            tipoAtribuicao: jison.simbolosPreInseridos[index].tipoAtribuicao
         };
 
         jison.tabelaSimbolo[jison.simbolosPreInseridos[index].lexema + '_' + simbolo.escopo] = simbolo;
@@ -48,6 +49,23 @@ jison.analiseSemantica = function () {
 
         if (simbolo.token === 'IDENTIFIER') {
             if (simbolo.valor == null) {
+                if(simbolo.tipoAtribuicao === 'ADDADD' || simbolo.tipoAtribuicao === 'SUBSUB'){
+
+                    let escopo = resultado[`escopo_${simbolo.escopo}`];
+
+                    if(!escopo){
+                        escopo = {
+                            escopo: simbolo.escopo,
+                            expressoes: ""
+                        };
+    
+                        resultado[`escopo_${simbolo.escopo}`] = escopo;
+                    }
+
+                    resultado[`escopo_${simbolo.escopo}`].expressoes += `${simboloProp.substring(0, simboloProp.indexOf('_'))} ${simbolo.tipoAtribuicao} 1`;
+    
+                    resultado[`escopo_${simbolo.escopo}`].expressoes += ";\n";
+                }
                 continue;
             }
             else {
@@ -62,14 +80,11 @@ jison.analiseSemantica = function () {
                     resultado[`escopo_${simbolo.escopo}`] = escopo;
                 }
 
-                // resultado += `======== ESCOPO ${simbolo.escopo} ========\n`;
-                resultado[`escopo_${simbolo.escopo}`].expressoes += `${simboloProp.substring(0, simboloProp.indexOf('_'))} ATTR `;
+                resultado[`escopo_${simbolo.escopo}`].expressoes += `${simboloProp.substring(0, simboloProp.indexOf('_'))} ${simbolo.tipoAtribuicao} `;
 
                 let tipoValorSimbolo = jison.obterTipoValorSimbolo(simboloProp);
 
                 resultado[`escopo_${simbolo.escopo}`].expressoes += ";\n";
-
-                // resultado += "\n\n\n";
 
                 if(tipoValorSimbolo !== simbolo.tipo){
                     throw "Expressão inválida";
