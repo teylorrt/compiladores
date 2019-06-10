@@ -1,6 +1,10 @@
 var fs = require("fs");
 var jison = require("jison");
 
+var resultado = {
+
+};
+
 jison.escopo = 1;
 jison.tabelaSimbolo = [
 
@@ -47,7 +51,25 @@ jison.analiseSemantica = function () {
                 continue;
             }
             else {
+                let escopo = resultado[`escopo_${simbolo.escopo}`];
+
+                if(!escopo){
+                    escopo = {
+                        escopo: simbolo.escopo,
+                        expressoes: ""
+                    };
+
+                    resultado[`escopo_${simbolo.escopo}`] = escopo;
+                }
+
+                // resultado += `======== ESCOPO ${simbolo.escopo} ========\n`;
+                resultado[`escopo_${simbolo.escopo}`].expressoes += `${simboloProp.substring(0, simboloProp.indexOf('_'))} ATTR `;
+
                 let tipoValorSimbolo = jison.obterTipoValorSimbolo(simboloProp);
+
+                resultado[`escopo_${simbolo.escopo}`].expressoes += ";\n";
+
+                // resultado += "\n\n\n";
 
                 if(tipoValorSimbolo !== simbolo.tipo){
                     throw "Expressão inválida";
@@ -59,8 +81,16 @@ jison.analiseSemantica = function () {
 
 jison.obterTipoValorSimbolo = function (simboloName) {
     let simbolo = jison.tabelaSimbolo[simboloName];
+    
     if (simbolo) {
         if (simbolo.valor == null || typeof (simbolo.valor) === 'string' && simbolo.token.indexOf('_LITERAL') >= 0) {
+            if(simbolo.valor == null){
+
+                resultado[`escopo_${simbolo.escopo}`].expressoes += simboloName.substring(0, simboloName.indexOf('_'));
+            }
+            else{
+                resultado[`escopo_${simbolo.escopo}`].expressoes += simbolo.valor;
+            }
             return simbolo.tipo;
         }
         else if (typeof (simbolo.valor) === 'object') {
@@ -68,7 +98,9 @@ jison.obterTipoValorSimbolo = function (simboloName) {
                 return jison.obterTipoValorSimbolo(simbolo.valor.value + "_" + simbolo.escopo);
             }
             else {
+
                 let tipoLeft = jison.obterTipoValorSimbolo(simbolo.valor.left.value + "_" + simbolo.escopo);
+                resultado[`escopo_${simbolo.escopo}`].expressoes += ` ${simbolo.valor.oper} `;
                 let tipoRight = jison.obterTipoValorSimbolo(simbolo.valor.right.value + "_" + simbolo.escopo);
 
                 if (tipoLeft == tipoRight) {
@@ -95,12 +127,24 @@ var compiler = new jison.Parser(grammar);
 var sintaticParser = function (src, srcName) {
     try {
         compiler.parse(src);
-        console.log(jison.tabelaSimbolo);
+        escreverArquivo();
         console.log(srcName + ' is a valid code!');
     } catch (error) {
         console.log(srcName + ' is a invalid code:\n');
         console.log(error.toString());
     }
-}
+};
+
+var escreverArquivo = function(){
+    let temp = "";
+    for (let scope in resultado) {
+        let tempScope = resultado[scope];
+        temp += `======== ESCOPO ${tempScope.escopo} ========\n`;
+        temp += tempScope.expressoes;
+        temp += "\n\n\n";
+    }
+
+    fs.writeFileSync("result/codigoIntermediario.txt", temp);
+};
 
 sintaticParser(sourceSuccess, "sourceTestSuccess");

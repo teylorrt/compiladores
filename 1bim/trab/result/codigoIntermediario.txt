@@ -1,0 +1,13 @@
+======== ESCOPO 2 ========
+resultado ATTR N1 MULT N2;
+result2 ATTR 3;
+
+
+
+======== ESCOPO 3 ========
+V1 ATTR 7;
+V2 ATTR 8;
+resultado ATTR 1;
+
+
+

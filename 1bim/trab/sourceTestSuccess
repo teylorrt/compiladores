@@ -18,6 +18,7 @@ void imprime_cabec(void)
 int multiplica(int N1, int N2)
 {
   int resultado = N1 * N2;
+  int result2 = 3;
   
   //retornando o valor para main
   return(resultado);
